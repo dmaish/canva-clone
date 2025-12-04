@@ -10,7 +10,7 @@ const Editor = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const canvas = new fabric.Canvas(canvasRef.current, {
+        const canvas = new fabric.Canvas(canvasRef.current, { //todo; confirm this is where the ref gets attached to the fabric instance            controlsAboveOverlay: true,
             controlsAboveOverlay: true,
             preserveObjectStacking: true,
         });
@@ -24,7 +24,7 @@ const Editor = () => {
 
     return (
         <div className="h-full flex flex-col">
-            <div className="flex flex-col" ref={containerRef}>
+            <div className="flex-1 h-full bg-muted" ref={containerRef}>
                 <canvas ref={canvasRef} />
             </div>
         </div>
