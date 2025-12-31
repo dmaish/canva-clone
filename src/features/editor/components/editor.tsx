@@ -2,6 +2,10 @@
 import { useEffect, useRef } from "react";
 import { useEditor } from "../hooks/use-editor";
 import { fabric } from "fabric";
+import { Navbar } from "./navbar";
+import { Sidebar } from "./sidebar";
+import { Toolbar } from "./toolbar";
+import { Footer } from "./footer";
 
 const Editor = () => {
     const { init } = useEditor();
@@ -10,7 +14,7 @@ const Editor = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const canvas = new fabric.Canvas(canvasRef.current, { //todo; confirm this is where the ref gets attached to the fabric instance            controlsAboveOverlay: true,
+        const canvas = new fabric.Canvas(canvasRef.current, { //todo; confirm this is where the ref gets attached to the fabric instance controlsAboveOverlay: true,
             controlsAboveOverlay: true,
             preserveObjectStacking: true,
         });
@@ -19,13 +23,26 @@ const Editor = () => {
             initialCanvas: canvas,
             initialContainer: containerRef.current!,
         });
+
+        return () => {
+            canvas.dispose();
+        }
+        
     }, [init]);
 
 
     return (
         <div className="h-full flex flex-col">
-            <div className="flex-1 h-full bg-muted" ref={containerRef}>
-                <canvas ref={canvasRef} />
+            <Navbar />
+            <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
+                <Sidebar />
+                <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
+                    <Toolbar />
+                    <div className="flex-1 h-[100%-124px] bg-muted" ref={containerRef}>
+                        <canvas ref={canvasRef} />
+                    </div>
+                    <Footer />
+                </main>
             </div>
         </div>
     );

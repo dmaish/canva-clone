@@ -44,12 +44,12 @@ export const useAutoresize = ({
         viewportTransform[4] = canvas.width / 2 - workspaceCenter.x * viewportTransform[0];
         viewportTransform[5] = canvas.height / 2 - workspaceCenter.y * viewportTransform[3];
 
-        // canvas.setViewportTransform(viewportTransform);
+        canvas.setViewportTransform(viewportTransform);
 
-        // localWorkspace.clone((cloned: fabric.Rect) => {
-        //     canvas.clipPath = cloned;
-        //     canvas.requestRenderAll();
-        // });
+        localWorkspace.clone((cloned: fabric.Rect) => {
+            canvas.clipPath = cloned;
+            canvas.requestRenderAll();
+        });
 
     }, [canvas, container]);
 
@@ -58,7 +58,6 @@ export const useAutoresize = ({
         if (!canvas || !container) return;
 
         const resizeObserver = new ResizeObserver(() => {
-            console.log("resizing canvas++++++");
             autoZoom();
         });
         resizeObserver.observe(container);
