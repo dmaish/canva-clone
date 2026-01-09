@@ -39,7 +39,7 @@ export const useAutoresize = ({
         const workspaceCenter = localWorkspace.getCenterPoint();
         const viewportTransform = canvas.viewportTransform;
 
-        if( canvas.width === undefined || canvas.height === undefined || !viewportTransform ){  return }
+        if ( canvas.width === undefined || canvas.height === undefined || !viewportTransform ){  return }
 
         viewportTransform[4] = canvas.width / 2 - workspaceCenter.x * viewportTransform[0];
         viewportTransform[5] = canvas.height / 2 - workspaceCenter.y * viewportTransform[3];
@@ -60,6 +60,7 @@ export const useAutoresize = ({
         const resizeObserver = new ResizeObserver(() => {
             autoZoom();
         });
+        
         resizeObserver.observe(container);
 
         return () => {
