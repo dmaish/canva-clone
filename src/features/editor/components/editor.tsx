@@ -11,7 +11,7 @@ import { Shapesidebar } from "./shape-sidebar";
 
 const Editor = () => {
 
-    const { init } = useEditor();
+    const { init, editor } = useEditor();
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeTool, setActiveTool] = useState<ActiveTool>("select");
@@ -45,7 +45,7 @@ const Editor = () => {
             <Navbar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
             <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
                 <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
-                <Shapesidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
+                <Shapesidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
                     <Toolbar />
                     <div className="flex-1 h-[100%-124px] bg-muted" ref={containerRef}>
