@@ -8,6 +8,7 @@ import { Toolbar } from "./toolbar";
 import { Footer } from "./footer";
 import { ActiveTool } from "../types";
 import { Shapesidebar } from "./shape-sidebar";
+import { FillColorSidebar } from "./fill-color-sidebar";
 
 const Editor = () => {
 
@@ -22,7 +23,7 @@ const Editor = () => {
         }
     }, [activeTool]);
 
-    useEffect(() => {
+    useEffect(() => { 
         const canvas = new fabric.Canvas(canvasRef.current, { //todo; confirm this is where the ref gets attached to the fabric instance controlsAboveOverlay: true,
             controlsAboveOverlay: true,
             preserveObjectStacking: true,
@@ -36,7 +37,7 @@ const Editor = () => {
         return () => {
             canvas.dispose();
         }
-        
+
     }, [init]);
 
 
@@ -46,8 +47,14 @@ const Editor = () => {
             <div className="absolute h-[calc(100%-68px)] w-full top-[68px] flex">
                 <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 <Shapesidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
+                <FillColorSidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
-                    <Toolbar />
+                    <Toolbar
+                        editor={editor}
+                        activeTool={activeTool}
+                        onChangeActiveTool={onChangeActiveTool} 
+                        key={JSON.stringify(editor?.canvas.getActiveObject())} // Force re-render when active object changes. Very hacky but works for now.
+                    />
                     <div className="flex-1 h-[100%-124px] bg-muted" ref={containerRef}>
                         <canvas ref={canvasRef} />
                     </div>
