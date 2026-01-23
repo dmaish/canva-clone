@@ -6,13 +6,16 @@ import { Navbar } from "./navbar";
 import { Sidebar } from "./sidebar";
 import { Toolbar } from "./toolbar";
 import { Footer } from "./footer";
-import { ActiveTool } from "../types";
+import { 
+    ActiveTool,
+    selectionDependentTools
+} from "../types";
 import { Shapesidebar } from "./shape-sidebar";
 import { FillColorSidebar } from "./fill-color-sidebar";
+import { StrokeColorSidebar } from "./stroke-color-sidebar";
 
 const Editor = () => {
 
-    const { init, editor } = useEditor();
     const canvasRef = useRef(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeTool, setActiveTool] = useState<ActiveTool>("select");
@@ -22,6 +25,16 @@ const Editor = () => {
             setActiveTool(tool);
         }
     }, [activeTool]);
+
+    const onClearSelection = useCallback(() => {
+        if (selectionDependentTools.includes(activeTool)) {
+            setActiveTool("select");
+        }
+    }, [activeTool]);
+
+    const { init, editor } = useEditor({
+        clearSelectionCallback: () => onClearSelection,
+    });
 
     useEffect(() => { 
         const canvas = new fabric.Canvas(canvasRef.current, { //todo; confirm this is where the ref gets attached to the fabric instance controlsAboveOverlay: true,
@@ -48,6 +61,7 @@ const Editor = () => {
                 <Sidebar activeTool={activeTool} onChangeActiveTool={onChangeActiveTool} />
                 <Shapesidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
                 <FillColorSidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
+                <StrokeColorSidebar activeTool={activeTool} editor={editor} onChangeActiveTool={onChangeActiveTool} />
                 <main className="bg-muted flex-1 overflow-auto relative flex flex-col">
                     <Toolbar
                         editor={editor}

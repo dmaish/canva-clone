@@ -1,6 +1,16 @@
 import { fabric } from "fabric";
 import * as material from "material-colors";
 
+export const selectionDependentTools: ActiveTool[] = [
+    "fill",
+    "font",
+    "filter",
+    "opacity",
+    "remove-bg",
+    "stroke-color",
+    "stroke-width",
+];
+
 export const colors = [
     material.red["500"],
     material.pink["500"],
@@ -24,7 +34,8 @@ export const colors = [
     "transparent",
 ];
 
-export type ActiveTool = "select" 
+export type ActiveTool = 
+"select" 
 |"text" 
 |"shapes" 
 |"images" 
@@ -87,6 +98,10 @@ export const DIAMOND_OPTIONS = {
     angle: 0,
 };
 
+export interface EditorHookProps {
+    clearSelectionCallback?: () => void;
+}
+
 export type buildEditorProps = {
     canvas: fabric.Canvas;
     fillColor: string;
@@ -108,8 +123,8 @@ export interface Editor {
     changeFillColor: (value: string) => void;
     changeStrokeWidth: (value: number) => void;
     changeStrokeColor: (value: string) => void;
-    fillColor: string;
-    strokeColor: string;
+    getActiveFillColor: () => string;
+    getActiveStrokeColor: () => string;
     strokeWidth: number;
     canvas: fabric.Canvas;
     selectedObjects: fabric.Object[];
